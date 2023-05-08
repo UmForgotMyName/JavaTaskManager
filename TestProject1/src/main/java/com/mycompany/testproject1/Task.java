@@ -17,10 +17,18 @@ public class Task {
     private String dueDate;
     private int importance;
     
-    Task(String title, String description, String dueDate, int importance){
+    Task(String title, String description, String dueDate, int importance) {
         this.title = title;
         this.description = description;
         this.creationDate = new Date();
+        this.dueDate = dueDate;
+        this.importance = importance;
+    }
+    
+    Task(String title, String description, String dueDate,Date creationDate, int importance){
+        this.title = title;
+        this.description = description;
+        this.creationDate = creationDate;
         this.dueDate = dueDate;
         this.importance = importance;
     }

@@ -95,7 +95,6 @@ public class TaskManager {
 
         final Task[] newTask = new Task[1]; // Declare task as a final array to make it effectively final
         final Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
-        final boolean checker;
 
         // Create the UI components
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
