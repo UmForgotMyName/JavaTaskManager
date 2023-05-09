@@ -212,7 +212,7 @@ public class App extends Application {
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Task List Saved");
             alert.setHeaderText(null);
-            alert.setContentText("TaskList has been successfully saved to " + ListTitle +".txt");
+            alert.setContentText("TaskList has been successfully saved to " + ListTitle + ".txt");
             alert.showAndWait();
         });
 
@@ -337,7 +337,11 @@ public class App extends Application {
                 lineCounter++;
             }
         } catch (IOException | ParseException ex) {
-            ex.printStackTrace();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Error reading from file.");
+            alert.showAndWait();
         }
 
     }
@@ -353,7 +357,11 @@ public class App extends Application {
                 writer.println(task.getImportance());
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Error writing to file.");
+            alert.showAndWait();
         }
 
     }
