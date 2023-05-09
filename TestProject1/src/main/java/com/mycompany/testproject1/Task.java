@@ -72,7 +72,5 @@ public class Task {
     public void setImportance(int importance) {
         this.importance = importance;
     }
-    
-    
 }
 

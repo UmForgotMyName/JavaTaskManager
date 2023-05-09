@@ -16,6 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -69,7 +71,7 @@ public class App extends Application {
     public static GridPane createGridPanes(Task task) {
 
         Label titleLabel = new Label(task.getTitle());
-        titleLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+        titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
         Label descriptionLabel = new Label(task.getDescription());
         Label dueDateLabel = new Label("Due date: " + task.getDueDate());
         Label importanceLabel = new Label("Importance: " + task.getImportance());
@@ -111,7 +113,11 @@ public class App extends Application {
         gridPane.add(editButton, 0, 4);
 
         // Set some styling for the gridpane
-        gridPane.setStyle("-fx-background-color: white; -fx-border-color: black; -fx-padding: 10px;");
+        String backgroundColor = "#ECEFF1";
+        String fontFamily = "Roboto, sans-serif;";
+        String css = "-fx-background-color: " + backgroundColor + ";" + "-fx-font-family: " + fontFamily + ";" + "-fx-font-size: 12pt;";
+        gridPane.setStyle(css + "-fx-border-color: black; -fx-padding: 10px;");
+
         return gridPane;
     }
 
@@ -164,6 +170,23 @@ public class App extends Application {
         gridPane.add(sortLabel, 3, 0);
         gridPane.add(sortOptions, 4, 0);
         gridPane.add(Savebtn, 7, 0);
+        gridPane.setPadding(new Insets(0, 0, 10, 0)); // Adds 10 pixels of padding to the bottom
+
+        String backgroundColor = "#ECEFF1";
+        String buttonColor = "#2196F3";
+        String buttonTextColor = "white";
+        String titleTextColor = "#37474F";
+        String fontFamily = "Roboto, sans-serif;";
+        String css = "-fx-background-color: " + backgroundColor + ";"
+                + "-fx-font-family: " + fontFamily + ";"
+                + "-fx-font-size: 12pt;";
+
+        Addbtn.setStyle(css + "-fx-background-color: " + buttonColor + "; -fx-text-fill: " + buttonTextColor + ";");
+
+        sortLabel.setStyle(css + "-fx-text-fill: " + titleTextColor + ";");
+        sortOptions.setStyle(css + "-fx-background-color: " + buttonColor + "; -fx-text-fill: " + buttonTextColor + ";");
+
+        Savebtn.setStyle(css + "-fx-background-color: " + buttonColor + "; -fx-text-fill: " + buttonTextColor + ";");
 
         Addbtn.setOnAction((ActionEvent event) -> {
             Task task = TaskManager.taskCreator();
@@ -177,7 +200,7 @@ public class App extends Application {
         });
 
         sortOptions.getSelectionModel().selectedItemProperty().addListener((ObservableValue<? extends String> observable, String oldValue, String newValue) -> {
-            System.out.println("Selected item changed from " + oldValue + " to " + newValue);
+            //System.out.println("Selected item changed from " + oldValue + " to " + newValue);
             sort = newValue;
             sortTasks();
         });
@@ -283,11 +306,10 @@ public class App extends Application {
                         break;
                     case 4:
                         importance = line;
-                        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
                         Task task = new Task(title, description, dueDate, dateFormat.parse(creationDate), Integer.parseInt(importance));
                         tasks.add(task);
                         newPanes.add(createGridPanes(task));
-
                         vbox.getChildren().add(newPanes.get(newPanes.size() - 1));
                         break;
                     default:
@@ -344,8 +366,24 @@ public class App extends Application {
 
         // Set up button actions
         createButton.setOnAction(e -> {
+            boolean flag = true;
+            
+            File directory = new File(System.getProperty("user.home") + "/TaskManagerFiles");
+            File[] files = directory.listFiles();
             name[0] = nameField.getText().trim();
-            if (!name[0].isEmpty()) {
+            for (File file : files) {
+                if (file.getName().equals(name[0]+".txt")) {
+                    flag = false;
+                    
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("TaskList already exists. Please use another name.");
+                    alert.showAndWait();
+                }
+            }
+
+            if (!name[0].isEmpty() && flag == true) {
                 popupStage.close();
             }
         });
