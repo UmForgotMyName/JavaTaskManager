@@ -14,6 +14,7 @@ import javafx.application.Application;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -171,6 +172,7 @@ public class App extends Application {
         gridPane.add(sortOptions, 4, 0);
         gridPane.add(Savebtn, 7, 0);
         gridPane.setPadding(new Insets(0, 0, 10, 0)); // Adds 10 pixels of padding to the bottom
+        gridPane.setAlignment(Pos.CENTER);
 
         String backgroundColor = "#ECEFF1";
         String buttonColor = "#2196F3";
@@ -207,6 +209,11 @@ public class App extends Application {
 
         Savebtn.setOnAction((ActionEvent event) -> {
             PanesToFile(new File(System.getProperty("user.home") + "/TaskManagerFiles/" + ListTitle + ".txt"));
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Task List Saved");
+            alert.setHeaderText(null);
+            alert.setContentText("TaskList has been successfully saved to " + ListTitle +".txt");
+            alert.showAndWait();
         });
 
         return gridPane;
@@ -266,7 +273,19 @@ public class App extends Application {
                     FileToPanes(selectedFile);
                     taskDisplay();
                     popupStage.close(); // Close the popup stage
+                } else {
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Please choose a text file (.txt)");
+                    alert.showAndWait();
                 }
+            } else {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Error selecting file.");
+                alert.showAndWait();
             }
         });
 
@@ -367,14 +386,14 @@ public class App extends Application {
         // Set up button actions
         createButton.setOnAction(e -> {
             boolean flag = true;
-            
+
             File directory = new File(System.getProperty("user.home") + "/TaskManagerFiles");
             File[] files = directory.listFiles();
             name[0] = nameField.getText().trim();
             for (File file : files) {
-                if (file.getName().equals(name[0]+".txt")) {
+                if (file.getName().equals(name[0] + ".txt")) {
                     flag = false;
-                    
+
                     Alert alert = new Alert(AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText(null);
