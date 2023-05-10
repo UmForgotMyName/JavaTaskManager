@@ -27,7 +27,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -73,8 +75,15 @@ public class App extends Application {
 
     public static GridPane createGridPanes(Task task) {
 
-        Label titleLabel = new Label(task.getTitle());
+        Text titleLabel = new Text(task.getTitle());
         titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 20));
+
+        if (task.getCompleted()) {
+            titleLabel.setStyle("-fx-strikethrough: true;");
+        } else {
+            titleLabel.setStyle("-fx-strikethrough: false;");
+        }
+
         Label descriptionLabel = new Label(task.getDescription());
         Label dueDateLabel = new Label("Due date: " + task.getDueDate());
         Label importanceLabel = new Label("Importance: " + task.getImportance());
@@ -124,6 +133,12 @@ public class App extends Application {
             String fontFamily = "Roboto, sans-serif;";
             String css = "-fx-background-color: " + backgroundColor + ";" + "-fx-font-family: " + fontFamily + ";" + "-fx-font-size: 12pt;";
             gridPane.setStyle(css + "-fx-border-color: black; -fx-padding: 10px;");
+
+            if (task.getCompleted()) {
+                titleLabel.setStyle("-fx-strikethrough: true;");
+            } else {
+                titleLabel.setStyle("-fx-strikethrough: false;");
+            }
 
         });
         gridPane.add(completedButton, 3, 4);
@@ -240,9 +255,9 @@ public class App extends Application {
         Button selectButton = new Button("Select TaskList");
         Label titleLabel = new Label("Rehan's TaskManager");
         Button createButton = new Button("Create New TaskList");
-
+        
         // Set the spacing and padding of the vertical box
-        VBox localVBox = new VBox(titleLabel, selectButton, createButton);
+        VBox localVBox = new VBox(titleLabel,selectButton, createButton);
         localVBox.setSpacing(10);
         localVBox.setPadding(new Insets(10));
 
@@ -342,10 +357,9 @@ public class App extends Application {
                         break;
                     case 5:
                         completed = line;
-                        System.out.println("test");
-                        
+
                         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-                        Task task = new Task(title, description, dueDate, dateFormat.parse(creationDate), Integer.parseInt(importance),Boolean.parseBoolean(completed));
+                        Task task = new Task(title, description, dueDate, dateFormat.parse(creationDate), Integer.parseInt(importance), Boolean.parseBoolean(completed));
                         tasks.add(task);
                         newPanes.add(createGridPanes(task));
                         vbox.getChildren().add(newPanes.get(newPanes.size() - 1));
