@@ -16,6 +16,7 @@ public class Task {
     private Date creationDate;
     private String dueDate;
     private int importance;
+    private boolean completed;
     
     Task(String title, String description, String dueDate, int importance) {
         this.title = title;
@@ -23,14 +24,25 @@ public class Task {
         this.creationDate = new Date();
         this.dueDate = dueDate;
         this.importance = importance;
+        this.completed = false;
     }
     
-    Task(String title, String description, String dueDate,Date creationDate, int importance){
+    Task(String title, String description, String dueDate,Date creationDate, int importance , boolean completed){
         this.title = title;
         this.description = description;
         this.creationDate = creationDate;
         this.dueDate = dueDate;
         this.importance = importance;
+        this.completed = completed;
+    }
+    
+    
+    public boolean getCompleted(){
+        return completed;
+    }
+    
+    public void setCompleted(boolean completed){
+        this.completed = completed;
     }
     
     public String getTitle() {

@@ -40,6 +40,8 @@ public class App extends Application {
 
     public static ArrayList<GridPane> newPanes = new ArrayList<>();
     public static ArrayList<Task> tasks = new ArrayList<>();
+    //public static ArrayList<Task> completedTasks = new ArrayList<>();
+
     public static VBox vbox = new VBox();
     public static String sort;
     public static String ListTitle;
@@ -113,8 +115,21 @@ public class App extends Application {
         });
         gridPane.add(editButton, 0, 4);
 
+        Button completedButton = new Button(task.getCompleted() ? "Mark as Uncompleted" : "Mark as Completed");
+        completedButton.setOnAction((ActionEvent event) -> {
+            task.setCompleted(!task.getCompleted());
+            completedButton.setText(task.getCompleted() ? "Mark as Uncompleted" : "Mark as Completed");
+
+            String backgroundColor = !task.getCompleted() ? "#ECEFF1" : "#ADD8E6";
+            String fontFamily = "Roboto, sans-serif;";
+            String css = "-fx-background-color: " + backgroundColor + ";" + "-fx-font-family: " + fontFamily + ";" + "-fx-font-size: 12pt;";
+            gridPane.setStyle(css + "-fx-border-color: black; -fx-padding: 10px;");
+
+        });
+        gridPane.add(completedButton, 3, 4);
+
         // Set some styling for the gridpane
-        String backgroundColor = "#ECEFF1";
+        String backgroundColor = !task.getCompleted() ? "#ECEFF1" : "#ADD8E6";
         String fontFamily = "Roboto, sans-serif;";
         String css = "-fx-background-color: " + backgroundColor + ";" + "-fx-font-family: " + fontFamily + ";" + "-fx-font-size: 12pt;";
         gridPane.setStyle(css + "-fx-border-color: black; -fx-padding: 10px;");
@@ -241,7 +256,6 @@ public class App extends Application {
         popupStage.setTitle("Rehan's TaskManager");
 
         // Add a style sheet to the scene to improve the look and feel of the popup
-        scene.getStylesheets().add("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
         String backgroundColor = "#ECEFF1";
         String buttonColor = "#2196F3";
         String buttonTextColor = "white";
@@ -303,14 +317,14 @@ public class App extends Application {
 
     public static void FileToPanes(File file) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            String line, title = null, description = null, dueDate = null, creationDate = null, importance;
+            String line, title = null, description = null, dueDate = null, creationDate = null, importance = null, completed;
             int lineCounter = 0;
 
             while ((line = reader.readLine()) != null) {
                 if (lineCounter == 0) {
                     ListTitle = line;
                 }
-                switch ((lineCounter - 1) % 5) {
+                switch ((lineCounter - 1) % 6) {
                     case 0:
                         title = line;
                         break;
@@ -325,8 +339,13 @@ public class App extends Application {
                         break;
                     case 4:
                         importance = line;
+                        break;
+                    case 5:
+                        completed = line;
+                        System.out.println("test");
+                        
                         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-                        Task task = new Task(title, description, dueDate, dateFormat.parse(creationDate), Integer.parseInt(importance));
+                        Task task = new Task(title, description, dueDate, dateFormat.parse(creationDate), Integer.parseInt(importance),Boolean.parseBoolean(completed));
                         tasks.add(task);
                         newPanes.add(createGridPanes(task));
                         vbox.getChildren().add(newPanes.get(newPanes.size() - 1));
@@ -355,6 +374,7 @@ public class App extends Application {
                 writer.println(task.getDueDate());
                 writer.println(task.getCreationDate());
                 writer.println(task.getImportance());
+                writer.println(task.getCompleted());
             }
         } catch (IOException ex) {
             Alert alert = new Alert(AlertType.ERROR);

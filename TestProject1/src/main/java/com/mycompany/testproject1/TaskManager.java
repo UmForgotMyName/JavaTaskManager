@@ -28,9 +28,8 @@ public class TaskManager {
         final Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
 
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("1", "2", "3", "4", "5");
-        choiceBox.setValue("1");
-
+        choiceBox.getItems().addAll("1 (least important)", "2 ", "3 ", "4 ", "5 (most important)");
+        choiceBox.setValue("1 (least important)");
         ButtonType buttonTypeOK = new ButtonType("Submit", ButtonData.OK_DONE);
 
         TextField titleTextField = new TextField();
@@ -48,7 +47,9 @@ public class TaskManager {
             String title = titleTextField.getText();
             String description = descriptionTextArea.getText();
             String dueDate = dueDateTextField.getText();
-            int importance = Integer.parseInt(choiceBox.getValue());
+
+            String[] token = choiceBox.getValue().split("\\s+");
+            int importance = Integer.parseInt(token[0]);
 
             if (!datePattern.matcher(dueDate).matches()) {
                 Alert validationAlert = new Alert(Alert.AlertType.ERROR);
@@ -84,7 +85,7 @@ public class TaskManager {
         final Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
 
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
-        choiceBox.getItems().addAll("1", "2", "3", "4", "5");
+        choiceBox.getItems().addAll("1 (least important)", "2 ", "3 ", "4 ", "5 (most important)");
         choiceBox.setValue(Integer.toString(oldTask.getImportance()));
 
         ButtonType buttonTypeOK = new ButtonType("Submit", ButtonData.OK_DONE);
@@ -108,7 +109,9 @@ public class TaskManager {
             String title = titleTextField.getText();
             String description = descriptionTextArea.getText();
             String dueDate = dueDateTextField.getText();
-            int importance = Integer.parseInt(choiceBox.getValue());
+
+            String[] token = choiceBox.getValue().split("\\s+");
+            int importance = Integer.parseInt(token[0]);
 
             if (!datePattern.matcher(dueDate).matches()) {
                 Alert validationAlert = new Alert(Alert.AlertType.ERROR);
