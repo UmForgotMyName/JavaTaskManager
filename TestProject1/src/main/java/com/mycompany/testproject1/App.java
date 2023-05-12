@@ -27,7 +27,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -69,7 +68,7 @@ public class App extends Application {
         });
     }
 
-    public static void main(String[] args) {
+    public static void startOfApp() {
         launch();
     }
 
