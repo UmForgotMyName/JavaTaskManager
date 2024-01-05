@@ -43,7 +43,7 @@ public class App extends Application {
     private static final MongoCollection<Document> UsersCollection; // connects to main usercollection in mongodb
 
     static { //does all connection stuff
-        String uri = "mongodb+srv://rehan1234444:Uzairali18@javacluster.g5gapcp.mongodb.net/";
+        String uri = "mongodb+srv://<username>:<password>@javacluster.<address>.mongodb.net/";
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
                 .build();
