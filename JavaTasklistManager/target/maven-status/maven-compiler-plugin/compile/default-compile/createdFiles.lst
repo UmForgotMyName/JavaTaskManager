@@ -1,0 +1,8 @@
+com\example\javatasklistmanager\AppStart.class
+module-info.class
+com\example\javatasklistmanager\App.class
+com\example\javatasklistmanager\Task.class
+com\example\javatasklistmanager\TaskCreationDateComparator.class
+com\example\javatasklistmanager\TaskDueDateComparator.class
+com\example\javatasklistmanager\TaskManager.class
+com\example\javatasklistmanager\TaskImportanceComparator.class
